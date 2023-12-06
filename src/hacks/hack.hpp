@@ -1,30 +1,44 @@
-#ifndef __HACK_H__
-#define __HACK_H__
+#ifndef HACK_H
+#define HACK_H
 
 #include <minwindef.h>
 
-#define BUF_SIZE 256
-
 /**
- * Base class of hacks.
+ * @brief Base class of hacks.
  * 
- * @param hook_addr hook address where code cave is stored
- * @param ret_addr return address that code cave uses 
- *      for returning to original code
- * @param nnop number of nop instructions needed 
- *      for changing original code to hook code 
+ * @param hook_addr hook address where redirection occurs
+ * @param nnop number of nop instructions added 
+ *      after the redirection instruction
  */
 class Hack {
-private: 
-    char *hook_instr[BUF_SIZE];
-    char *orig_instr[BUF_SIZE];
-    
-    virtual __declspec(naked) void codecave();
+private:     
+    DWORD hook_addr;
+    int nnop; 
+    bool flag;
 
-public:
-    Hack(DWORD hook_addr, DWORD ret_addr, int nnop);
-    virtual void enable();
-    virtual void disable();
+    /**
+     * @brief Operates hack.
+     */
+    virtual void __declspec(naked) codecave() {}
+
+public:    
+    Hack(DWORD hook_addr, int nnop) 
+        : hook_addr(hook_addr), nnop(nnop), flag(false) {}
+
+    /**
+     * @brief Enables hack.
+     */
+    void enable() { flag = true }
+
+    /**
+     * @brief Disables hack. 
+     */
+    void disable() { flag = false }
+
+    /**
+    * @brief Redirects original code to `codecave`.
+    */
+    void redirect();
 };
 
 #endif
