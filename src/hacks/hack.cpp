@@ -1,13 +1,15 @@
 #include "hack.hpp"
-#include "util/instruction.hpp"
+#include "hackenum.hpp"
 
 void Hack::redirect() {
-    unsigned char *hook_instr = (unsigned char *) hook_addr;
+    DWORD old_protect;
 
-    *hook_instr = Instruction::JMP;
-    *((DWORD *) (hook_instr + 1)) = (DWORD) codecave - hook_addr + 5;
+    VirtualProtect((void *) hook_addr, nnop + 4, PAGE_EXECUTE_READWRITE, &old_protect);
+
+    *((unsigned char *) hook_addr) = JMP;
+    *((DWORD *) (hook_addr + 1)) = (DWORD) (reinterpret_cast<void *>(&codecave)) - hook_addr - 5;
 
     for (int i = 5; i <= nnop + 4; i++) {
-        *(hook_instr + i) = Instruction::NOP;
+        *((unsigned char *) hook_addr + i) = NOP;
     }
 }
