@@ -1,7 +1,7 @@
 #ifndef HACK_H
 #define HACK_H
 
-#include <minwindef.h>
+#include <Windows.h>
 
 /**
  * @brief Base class of hacks.
@@ -14,12 +14,15 @@ class Hack {
 private:     
     DWORD hook_addr;
     int nnop; 
-    bool flag;
 
     /**
      * @brief Operates hack.
      */
-    virtual void __declspec(naked) codecave() {}
+    virtual void __attribute__ ((naked)) codecave() {};
+
+protected:
+    DWORD ret_addr;
+    bool flag;
 
 public:    
     Hack(DWORD hook_addr, int nnop) 
@@ -28,12 +31,12 @@ public:
     /**
      * @brief Enables hack.
      */
-    void enable() { flag = true }
+    void enable() { flag = true; }
 
     /**
      * @brief Disables hack. 
      */
-    void disable() { flag = false }
+    void disable() { flag = false; }
 
     /**
     * @brief Redirects original code to `codecave`.
