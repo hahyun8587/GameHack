@@ -1,19 +1,21 @@
 #include "wallhack.hpp"
 
 WallHack *WallHack::getInstance(GameType type) {
-    WallHack *wh;
+    WallHack *wh = new WallHack();
 
     switch (type) {
         case ASSULT_CUBE:
             HMODULE hmd;
-            FARPROC proc_addr;
+            unsigned char *proc_code;
             
             hmd = GetModuleHandleA("opengl32.dll");
-            proc_addr = GetProcAddress(hmd, "glDrawElement");
-            wh = new WallHack((DWORD) proc_addr + 0x16, 1);
+            proc_code = (unsigned char *) GetProcAddress(hmd, "glDrawElement");
+            
+            wh->hook_code = proc_code + 0x16;
+            wh->ret_addr = (DWORD) proc_code + 0x1C;
+            wh->nnop = 1;
             wh->depth_func = (void (__stdcall *) (unsigned int)) GetProcAddress(
                     hmd, "glDepthFunc");
-            wh->ret_addr = (DWORD) proc_addr + 0x1C;
 
             break;
     }

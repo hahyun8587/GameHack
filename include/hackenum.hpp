@@ -1,5 +1,5 @@
-#ifndef HACKTYPE_H
-#define HACKTYPE_H
+#ifndef HACKENUM_H
+#define HACKENUM_H
 
 enum Instruction {
     JMP = 0xE9,

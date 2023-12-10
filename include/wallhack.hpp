@@ -6,10 +6,6 @@
 
 /**
  * @brief Class that operates wallhack.
- * 
- * @param hook_addr hook address where redirection occurs
- * @param nnop number of nop instructions added 
- *      after the redirection instruction
  */
 class WallHack : public Hack {
 private:
@@ -17,8 +13,7 @@ private:
     void __attribute__ ((naked)) codecave() final;
 
 public:
-    WallHack(DWORD hook_addr, int nnop) : Hack(hook_addr, nnop) {}
-    static WallHack *getInstance(GameType type);
+    static WallHack *getInstance(GameType type);  
 };
 
 #endif

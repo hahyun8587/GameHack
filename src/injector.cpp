@@ -42,8 +42,11 @@ void Injector::inject(const wchar_t *tar_proc_name, const char *dll_name) {
             thread = CreateRemoteThread(process, NULL, 0, 
                                         (LPTHREAD_START_ROUTINE) start_routine, 
                                         base_addr, 0, NULL);
-            
+            DWORD exit_code = -1;
+            std::cout << thread << std::endl;
             WaitForSingleObject(thread, INFINITE);
+            GetExitCodeThread(thread, &exit_code);
+            std::cout << exit_code << std::endl;
             VirtualFreeEx(process, base_addr, dll_name_len + 1, MEM_RELEASE);
             CloseHandle(thread);
             CloseHandle(process);

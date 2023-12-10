@@ -1,19 +1,15 @@
 #include <Windows.h>
 #include <iostream>
-#include "wallhack.hpp"
-#include "hackenum.hpp"
+#include "hack.hpp"
+#include "stathack.hpp"
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     //MessageBoxW(0, 0, 0, 0);
     
     if (fdwReason == DLL_PROCESS_ATTACH) {
-        WallHack *wh;
-    
-        wh = WallHack::getInstance(ASSULT_CUBE);
-        
-        wh->redirect();
+        StatHack *sh = new StatHack();
 
-        //wh->enable();
+        sh->modify(ASSULT_CUBE);    
     }
     
     return TRUE;

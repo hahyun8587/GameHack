@@ -2,32 +2,30 @@
 #define HACK_H
 
 #include <Windows.h>
+#include "hackenum.hpp"
 
 /**
  * @brief Base class of hacks.
- * 
- * @param hook_addr hook address where redirection occurs
- * @param nnop number of nop instructions added 
- *      after the redirection instruction
  */
 class Hack {
-private:     
-    DWORD hook_addr;
-    int nnop; 
+private:  
+    /**
+     * @brief 
+     */
+    virtual void __declspec(naked) codecave() {};
+
+protected:  
+    DWORD __attribute__((used)) ret_addr;
+    bool flag = 0;
 
     /**
-     * @brief Operates hack.
-     */
-    virtual void __attribute__ ((naked)) codecave() {};
-
-protected:
-    DWORD ret_addr;
-    bool flag;
+    * @brief Redirects original instruction to `codecave`.
+    * @param base base pointer of instruction to be redirected
+    * @param nnop number of nop instructions to be added
+    */
+    void redirect(unsigned char *base, int nnop, void (*codecave)());
 
 public:    
-    Hack(DWORD hook_addr, int nnop) 
-        : hook_addr(hook_addr), nnop(nnop), flag(false) {}
-
     /**
      * @brief Enables hack.
      */
@@ -39,9 +37,10 @@ public:
     void disable() { flag = false; }
 
     /**
-    * @brief Redirects original code to `codecave`.
-    */
-    void redirect();
+     * @brief Modifies original instructions based on given `type`.
+     * @param type the type of game
+     */
+    virtual void modify(GameType type) {};
 };
 
 #endif
