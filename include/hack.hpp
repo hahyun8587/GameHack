@@ -8,14 +8,8 @@
  * @brief Base class of hacks.
  */
 class Hack {
-private:  
-    /**
-     * @brief 
-     */
-    virtual void __declspec(naked) codecave() {};
-
 protected:  
-    DWORD __attribute__((used)) ret_addr;
+    DWORD ret_addr;
     bool flag = 0;
 
     /**

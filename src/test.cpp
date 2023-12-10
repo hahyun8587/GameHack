@@ -13,9 +13,9 @@ private:
 };
 
 int main() {
-    Child *child = new Child();
+    int a = 10;
 
-    std::cout << child->foo() << std::endl;
+    std:: cout << (int *) a + 1 << std::endl;
 
     return 0;
 }

@@ -4,9 +4,6 @@
 #include "hack.hpp"
 
 class StatHack : public Hack {
-private:
-    void codecave1();
-
 public:
     void modify(GameType type) final;
 };
