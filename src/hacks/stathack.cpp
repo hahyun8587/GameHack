@@ -5,26 +5,23 @@ void StatHack::modify(GameType type) {
         case ASSULT_CUBE:                     
             DWORD *static_base;
             DWORD *dynamic_base;
-            DWORD *health;
-            unsigned short *bullet;
-            //VirtualProtect((void *) bullet, 3, PAGE_EXECUTE_READWRITE, &old_protect);
+            DWORD *health, *bullet;
             
             static_base = (DWORD *) 0x50F4F4;
             dynamic_base = (DWORD *) *static_base;
 
             health = dynamic_base + 0xF8 / 4;
-            *health = 500;
+            bullet = (DWORD*) *(DWORD *) (*(dynamic_base + 0x374 / 4) + 0x14);
 
-            /**
             while (1) {
-                if (*health < 50) {
+                if (*health < 100) {
                     *health = 500;
                 }
-            }
-            **/
 
-            bullet = (unsigned short*) *(DWORD *) (*(DWORD *) ((DWORD) dynamic_base + 374) + 14);
-            *bullet = 15;
+                if (*bullet < 5) {
+                    *bullet = 20;
+                }
+            }
                     
             break;
     }       
