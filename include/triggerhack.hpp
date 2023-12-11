@@ -5,11 +5,11 @@
 
 class TriggerHack : public Hack {
 private:
-    int is_aimed;
-    void __declspec(naked) codecave();
     INPUT mouse_leftdown;
     INPUT mouse_leftup;
     DWORD ori_call_addr;
+    DWORD is_aimed;
+    void __declspec(naked) codecave();
 
 public:
     TriggerHack();
